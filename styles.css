@@ -1,0 +1,134 @@
+/*--------------------------------------------------------
+|                  Main page sections                    |
+--------------------------------------------------------*/
+
+/* Classes for custom header and navbar styling */
+.my-header h1 {
+	color: #333 ;
+}
+.my-navbar {
+	font-family: 'Roboto', sans-serif ;
+}
+.my-navbar .nav-link {
+	color: white ;
+}
+
+/* Container for body-content (between header and footer) */
+.my-container {
+	 width: 95%;
+	 max-width: 800px;
+	 margin: 2em auto 0 auto ;
+	 min-height: max(100vh, 800px); /* Ensure footer is far enough down if the rest of the content takes up insufficient vertical space */
+}
+
+/* Class for footer styling */
+.my-footer {
+	margin-top: 2em ;
+	padding: 0.5em;
+	color: #eee ;
+	background-color: #3333ff ;
+	border-top: 2px solid #0000ff ;
+	font-family: 'Roboto', sans-serif ;
+}
+.my-footer div {
+	gap: 1em ;
+}
+.my-footer hr {
+	color: #ffffff10 ;
+}
+
+/*--------------------------------------------------------
+|                      Subsections                       |
+--------------------------------------------------------*/
+
+/* Styling for intro-text */
+.my-quiz-intro-text {
+	background-color: #222288 ;
+	color: white ;
+	padding: 20px ;
+}
+
+/* Styling for question */
+.my-question-container {
+	background-color: #222288 ;
+	color: black ;
+	border: 2px solid black ;
+}
+.my-question {
+	background-color: #222288 ;
+	color: white ;
+	margin-bottom: 1em;
+	margin-top: 1em;
+	font-size: 150% ;
+}
+
+/* Styling for answer-choices layout */
+.my-answers {
+	flex-wrap: wrap ;
+	display: flex ;
+	gap: 16px ;
+	margin-bottom: 32px ;
+	min-height: 260px;
+}
+
+/* Styling for results container */
+.my-results-container {
+	background-color: #222288 ;
+}
+.my-results {
+	color: black ;
+	border: 2px solid black ;
+	display: flex ;
+	min-height: 360px;
+}
+
+/*--------------------------------------------------------
+|                  Misc element styling                  |
+--------------------------------------------------------*/
+
+.my-button {
+	width: 100% ;
+	border-radius: 0 ;
+}
+
+/*--------------------------------------------------------
+|   Additional classes for Bootstrap component styling   |
+--------------------------------------------------------*/
+
+/* Class for custom styling to be used in conjuction with Bootstrap 'card' class */
+.my-card {
+	background-color: #009 ;
+	width:50% ;
+	max-width: 200px ;
+	min-width: 120px;
+	margin: auto ;
+	opacity: 85% ;
+	color: white; 
+}
+.my-card .card-text {
+	font-family: 'Roboto', sans-serif ;
+}
+.my-card:not(:hover) {
+	transition: opacity 0.1s ;
+}
+.my-card:hover {
+	opacity: 100% ;
+	transform: scale(1.05) ;
+}
+
+/* Class for custom styling to be used in conjuction with Bootstrap 'carousel' class */
+.my-carousel {
+	border: 8px solid #222288ff ;;
+	height: 50vh ;
+}
+.my-carousel img {
+	object-fit: cover ;
+	height: 50vh ;
+	filter: brightness(0.75) ;
+	border: 3px solid black;
+}
+.my-carousel-caption {
+	padding-bottom: 0 ;
+	font-size: 200%;
+	filter: drop-shadow(0 0 0.3rem black) ;
+}
