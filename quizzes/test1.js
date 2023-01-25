@@ -1,7 +1,7 @@
 // Type: Module
 
 export default {
-	introText: "This is intro text for the quiz!",
+	introText: "This is intro text for the quiz number one!",
 	questions: [
 		{
 			question: 'Is this a question?',
