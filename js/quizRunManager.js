@@ -8,12 +8,15 @@ export default class QuizRunManager {
 	}
 
 	setAnswer(answerIndex) {
-		console.log("set answer " + answerIndex + " for question " + this.currentQuestionIndex) ;
 		this.quizRunAnswerSelections[this.currentQuestionIndex] = answerIndex ;
 	}
 
 	moveQuestionIndexBy(i) {
 		this.currentQuestionIndex += i ;
-		return [this.quizData.questions[this.currentQuestionIndex] || null, this.currentQuestionIndex]  ;
+		return [
+			this.currentQuestionIndex, 
+			this.quizData.questions[this.currentQuestionIndex], // (-1 index is okay here! - and we just leave it as undefined for out of bounds)
+			this.quizRunAnswerSelections[this.currentQuestionIndex] // (same here)
+		]  ;
 	}
 }
