@@ -52,9 +52,9 @@ export default class QuizUIManager {
 		this.quizIntroTextEl.innerText = quizData.introText ;
 	}
 
-	updateUI(questionData, questionIndex) {
+	updateUI(questionIndex, questionData = null, selectedAnswerIndex = null) {
 		if (questionIndex === -1) this.showTitleElements() ;
-		else if (questionData) this.showQuestion(questionData) ;
+		else if (questionData) this.showQuestion(questionData, selectedAnswerIndex) ;
 		else this.showResults() ;
 	}
 
@@ -62,7 +62,7 @@ export default class QuizUIManager {
 		this.setVisibilities(true, false, false) ;
 	}
 
-	showQuestion(questionData) {
+	showQuestion(questionData, selectedAnswerIndex) {
 		this.setVisibilities(false, true, false) ;
 
 		// Question
@@ -84,6 +84,17 @@ export default class QuizUIManager {
 			// Add click event-listener for it
 			quizAnswerEl.addEventListener('click', () => this.handleAnswerSelection(i)) ;
 		}
+
+		// Set as selected answer
+		if (selectedAnswerIndex !== null) {
+			this.quizAnswersContainerEl.childNodes[selectedAnswerIndex].classList.add('my-card-selected') ;
+		}
+	}
+
+	changeSelectedAnswer(answerIndex) {
+		for (const [i, el] of this.quizAnswersContainerEl.childNodes.entries()) {
+			el.classList.toggle('my-card-selected', (i === answerIndex)) ;
+		}
 	}
 
 	showResults() {
@@ -91,6 +102,7 @@ export default class QuizUIManager {
 	}
 
 	handleAnswerSelection(answerIndex) {
+		this.changeSelectedAnswer(answerIndex) ;
 		this.questionAnswerSelectCallback(answerIndex) // Just call the external callback for now
 	}
 

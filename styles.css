@@ -104,6 +104,7 @@
 	margin: auto ;
 	opacity: 85% ;
 	color: white; 
+	filter: drop-shadow(0 0 0.3rem black) ;
 }
 .my-card .card-text {
 	font-family: 'Roboto', sans-serif ;
@@ -114,6 +115,11 @@
 .my-card:hover {
 	opacity: 100% ;
 	transform: scale(1.05) ;
+}
+.my-card-selected {
+	opacity: 100% ;
+	filter: drop-shadow(0 0 0.4rem white) ;
+	outline: 2px solid #ddd ;
 }
 
 /* Class for custom styling to be used in conjuction with Bootstrap 'carousel' class */
