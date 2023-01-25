@@ -2,7 +2,7 @@
 import QuizDataManager from "./quizDataManager.js";
 
 // --- Create manager objects ---
-const quizDataManager = new QuizDataManager('/quizzes') ; // (manages the quiz-list / current-quiz data)
+const quizDataManager = new QuizDataManager('../quizzes') ; // (manages the quiz-list / current-quiz data)
 
 doSetup() ;
 
