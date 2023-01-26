@@ -71,15 +71,28 @@
 	min-height: 260px;
 }
 
-/* Styling for results container */
+/* Styling for results */
 .my-results-container {
 	background-color: #222288 ;
-}
-.my-results {
 	color: black ;
 	border: 2px solid black ;
+}
+
+.my-tie-notification {
+	font-size: 140% ;
+	color: white;
+}
+
+.my-results {
 	display: flex ;
+	gap: 1em;
+	margin-bottom: 1em;
+	margin-top: 1em;
+}
+
+.my-results-info {
 	min-height: 360px;
+	color: #eee ;
 }
 
 /*--------------------------------------------------------
@@ -101,6 +114,15 @@
 	width:50% ;
 	max-width: 200px ;
 	min-width: 120px;
+	margin: auto ;
+	opacity: 85% ;
+	color: white; 
+	filter: drop-shadow(0 0 0.3rem black) ;
+}
+.my-card2 {
+	background-color: #009 ;
+	width:50% ;
+	min-width: 200px;
 	margin: auto ;
 	opacity: 85% ;
 	color: white; 

@@ -95,13 +95,21 @@
 		</div>
 
 		<!-- RESULTS -->
-		<div id="results_container" class="my-results-container text-center">
+		<div id="results_container" class="text-center">
 			<!-- PREVIOUS QUESTION BUTTON -->
 			<button id="results_to_last_question" class="btn btn-primary btn-lg my-button">
 				<span class="iconify-inline" data-width="40px" data-height="40px" data-icon="ic:outline-arrow-drop-down-circle" data-rotate="180deg"></span>
 			</button>
-			<div id="results" class="my-results text-center">
-				<!-- TODO -->
+			<div class="my-results-container">
+			<div id="tie_notification" class="my-tie-notification text-center">
+				It's a tie! Select a result-group below to show its description.
+			</div>
+				<div id="results" class="my-results text-center">
+					<!-- RESULTS HERE -->
+				</div>
+				<div id="result_info" class="my-results-info text-center">
+					<!-- SELECTED RESULT INFO HERE -->
+				</div>
 			</div>
 		</div>
 	</main>
@@ -110,7 +118,7 @@
 	<footer class="my-footer">
 		<div class="d-flex justify-content-between">
 			<span>Site Design Copyright &#169; James Percival 2023</span>
-			<span class="text-end">Last Updated 2023-01-24</span>
+			<span class="text-end">Last Updated 2023-01-27</span>
 		</div>
 	</footer>
 
@@ -138,6 +146,17 @@
 			<div class="card-body">
 				<p class="answer_choice_text card-text">
 					<!-- ANSWER CHOICE TEXT HERE -->
+				</p>
+			</div>
+		</div>
+	</template>
+
+	<!-- Result Line-->
+	<template id="template_result_line">
+		<div class="card my-card2">
+			<div class="card-body">
+				<p class="result_text card-text">
+					<!-- RESULT TEXT HERE -->
 				</p>
 			</div>
 		</div>
