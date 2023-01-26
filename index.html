@@ -74,6 +74,9 @@
 
 		<!-- PREVIOUS QUESTION BUTTON -->
 		<div id="question_container" class="text-center">
+			<div id="progress_status" class="my-progress-status">
+				<!-- CURRENT PROGRESS HERE -->
+			</div>
 			<button id="prev_question" class="btn btn-primary btn-lg my-button">
 				<span class="iconify-inline" data-width="40px" data-height="40px" data-icon="ic:outline-arrow-drop-down-circle" data-rotate="180deg"></span>
 			</button>
@@ -151,7 +154,7 @@
 		</div>
 	</template>
 
-	<!-- Result Line-->
+	<!-- Result Line (note: the result_* classes are used for element targetting rather than styling) -->
 	<template id="template_result_line">
 		<div class="card my-card2">
 			<div class="card-body">

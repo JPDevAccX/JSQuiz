@@ -6,7 +6,7 @@ export default class QuizUIManager {
 		const keysToRetrieve = [
 			'quizTitle', 'quizSelectorContainer', 'quizIntroText', 
 			'quizStartButton', 'prevQuestionButton', 'nextQuestionButton', 'resultsToLastQButton',
-			'quizQuestionContainer', 'quizQuestion', 'quizAnswersContainer', 'quizAnswerTemplate',
+			'progressStatus', 'quizQuestionContainer', 'quizQuestion', 'quizAnswersContainer', 'quizAnswerTemplate',
 			'quizResultsContainer', 'tieNotification', 'results', 'resultInfo', 'resultsLineTemplate'
 		] ;
 		this.els = getElementsBySelector(selectors, keysToRetrieve) ;
@@ -26,7 +26,8 @@ export default class QuizUIManager {
 		this.els.quizTitle.innerText = quizTitle ;
 		this.els.quizIntroText.innerText = quizData.introText ;
 		this.quizData = quizData ;
-		this.numQuestions = this.quizData.questions.length ;
+		this.numQuestions =  this.quizData.questions.length ;
+		this.numAnswersRequired = (this.quizData.settings && this.quizData.settings.minAnswers) ? Number(this.quizData.settings.minAnswers) : this.numQuestions ;
 	}
 
 	updateUI(questionIndex, questionData = null, selectedAnswerIndex = null, numAnswered = null, results = null) {
@@ -34,6 +35,7 @@ export default class QuizUIManager {
 
 		if (questionIndex === -1) this.showTitleElements() ;
 		else if (questionData) {
+			this.setProgressDescription(numAnswered) ;
 			this.showQuestion(questionData, selectedAnswerIndex) ;
 			this.setNextQuestionEnabledState(numAnswered) ;
 		}
@@ -41,11 +43,16 @@ export default class QuizUIManager {
 	}
 
 	setNextQuestionEnabledState(numAnswered) {
-		this.els.nextQuestionButton.disabled = (this.questionIndex === this.numQuestions - 1 && numAnswered < this.numQuestions) ;
+		this.els.nextQuestionButton.disabled = (this.questionIndex === this.numQuestions - 1 && numAnswered < this.numAnswersRequired) ;
 	}
 
 	showTitleElements() {
 		this.setVisibilities(true, false, false) ;
+	}
+
+	setProgressDescription(numAnswered) {
+		this.els.progressStatus.innerHTML = 'Question ' + (this.questionIndex + 1) + " / " + this.numQuestions + "<br>" +
+			"(" + numAnswered + " answered out of a minimum of " + this.numAnswersRequired + ")" ;
 	}
 
 	showQuestion(questionData, selectedAnswerIndex) {
@@ -87,6 +94,7 @@ export default class QuizUIManager {
 		this.changeSelectedAnswer(answerIndex) ;
 		const numAnswered = this.questionAnswerSelectCallback(answerIndex) ;
 		this.setNextQuestionEnabledState(numAnswered) ;
+		this.setProgressDescription(numAnswered) ;
 	}
 
 	showResults(allScores, topScores, numAnswered) {
