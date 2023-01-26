@@ -4,13 +4,11 @@ export default {
 	settings: {
 		minAnswers: 6
 	},
-	introText: `
-		There are three basic learning styles. These are visual, auditory, and kinesthetic.
+	introText: `There are three basic learning styles. These are visual, auditory, and kinesthetic.
 		To learn, we depend on our senses to process the information around us.
 		Most people	tend to use one of their senses more than the others.
 		Read the questions below and select the answer that fits best, without thinking too much.
-		Go with your first choice.
-	`,
+		Go with your first choice.`,
 	questions: [
 		{
 			question: 'When you study for a test, would you rather...',
@@ -217,33 +215,39 @@ export default {
 		a : {
 			title: "Visual Learner",
 			description: `
-			You learn by seeing and looking. Visual Learners...
+			[b]You learn by seeing and looking. Visual Learners...[/b]
 			[ul]
 				[li]take numerous detailed notes[/li]
 				[li]tend to sit in the front[/li]
 				[li]are usually neat and clean[/li]
+				[li]often close their eyes to visualize or remember something[/li]
+				[li]are attracted to written or spoken language rich in imagery[/li]
 			[/ul]
 			`
 		},
 			b : {
 			title: "Auditory Learner",
 			description: `
-			You learn by hearing and listening. Auditory Learners...
+			[b]You learn by hearing and listening. Auditory Learners...[/b]
 			[ul]
 				[li]sit where they can hear but needn't pay attention to what is happening in front[/li]
 				[li]may not coordinate colors or clothes, but can explain why they are wearing what they are wearing and why[/li]
 				[li]hum or talk to themselves or others when bored[/li]
+				[li]acquire knowledge by reading aloud[/li]
+				[li]remember by verbalizing lessons to themselves[/li]
 			[/ul]
 			`
 		},
 			c : {
 			title: "Kinesthetic Learner",
 			description: `
-			You learn by touching and doing. Kinesthetic Learners...
+			[b]You learn by touching and doing. Kinesthetic Learners...[/b]
 			[ul]
 				[li]need to be active and take frequent breaks[/li]
 				[li]speak with their hands and with gestures[/li]
 				[li]remember what was done, but have difficulty recalling what was said or seen[/li]
+				[li]find reasons to tinker or move when bored[/li]
+				[li]rely on what they can directly experience or perform[/li]
 			[/ul]
 			`
 		}

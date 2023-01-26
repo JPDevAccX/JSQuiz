@@ -11,7 +11,8 @@ function markupToHtml(markup) {
 
 	const replaceTable = {
 		'[li]' : '<li>', '[/li]' : '</li>',
-		'[ul]' : '<ul>', '[/ul]' : '</ul>'
+		'[ul]' : '<ul>', '[/ul]' : '</ul>',
+		'[b]' : '<b>', '[/b]' : '</b>'
 	}
 	for (const [from, to] of Object.entries(replaceTable)) {
 		markup = markup.replaceAll(from, to) ;
