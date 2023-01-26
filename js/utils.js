@@ -35,3 +35,8 @@ function htmlspecialchars(str) {
   
   return str.replace(/[&<>"']/g, function(m) { return map[m]; });
 }
+
+// Retrieve the elements for the specified selectors and return as an object
+function getElementsBySelector(keysToSelectorsTable, keysToRetrieve) {
+	return Object.fromEntries(keysToRetrieve.map(key => ([key, document.querySelector(keysToSelectorsTable[key])]))) ;
+}
