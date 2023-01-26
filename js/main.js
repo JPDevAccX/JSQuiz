@@ -43,7 +43,7 @@ async function doSetup() {
 
 	// Load the data for the first quiz in the list and update the UI accordingly
 	const quizData = await quizDataManager.loadQuizByIndex(0) ;
-	quizUIManager.setQuizTitleInfo(quizList[0].title, quizData) ;
+	quizUIManager.initForQuiz(quizList[0].title, quizData) ;
 	quizUIManager.updateUI(-1) // question #-1 = title
 
 	// Start a new run for this quiz
@@ -58,7 +58,7 @@ async function doSetup() {
 		// Load the data for the newly selected quiz and update the UI accordingly
 		const newQuizIndex = event.to ;
 		const quizData = await quizDataManager.loadQuizByIndex(newQuizIndex) ;
-		quizUIManager.setQuizTitleInfo(quizList[newQuizIndex].title, quizData) ;
+		quizUIManager.initForQuiz(quizList[newQuizIndex].title, quizData) ;
 
 		// Start a new run for this quiz
 		quizRunManager.newRun(quizData) ;
@@ -67,9 +67,11 @@ async function doSetup() {
 
 function questionIndexChangeCallback(questionIndexDelta) {
 	const [questionIndex, questionData, answerIndex] = quizRunManager.moveQuestionIndexBy(questionIndexDelta) ;
-	quizUIManager.updateUI(questionIndex, questionData, answerIndex) ;
+	const numAnswered = quizRunManager.getNumAnswered() ;
+	const results = (questionIndex > -1 && !questionData) ? quizRunManager.calcResults() : null ;
+	quizUIManager.updateUI(questionIndex, questionData, answerIndex, numAnswered, results) ;
 }
 
 function handleAnswerSelection(answerIndex) {
-	quizRunManager.setAnswer.bind(quizRunManager)(answerIndex) ;
+	return quizRunManager.setAnswer.bind(quizRunManager)(answerIndex) ;
 }

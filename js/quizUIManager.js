@@ -13,9 +13,9 @@ export default class QuizUIManager {
 		quizAnswerTextClassName,
 		quizResultsContainerDomId,
 		questionIndexChangeCallback,
-		questionAnswerSelectCallback
+		questionAnswerSelectCallback,
 	) {
-		// Get the quiz title emenet
+		// Get the quiz title element
 		this.quizTitleEl = document.getElementById(quizTitleDomId) ;
 
 		// Get the quiz-selector container and child intro-text element
@@ -23,10 +23,10 @@ export default class QuizUIManager {
 		this.quizIntroTextEl = document.getElementById(quizIntroTextDomId) ;
 
 		// Add event listeners for all the buttons that go backwards / forwards through the title -> questions -> results
-		document.getElementById('quiz_start').addEventListener('click', () => questionIndexChangeCallback(+1)) ;
-		document.getElementById('prev_question').addEventListener('click', () => questionIndexChangeCallback(-1)) ;
-		document.getElementById('next_question').addEventListener('click', () => questionIndexChangeCallback(+1)) ;
-		document.getElementById('results_to_last_question').addEventListener('click', () => questionIndexChangeCallback(-1)) ;
+		document.getElementById('quiz_start').addEventListener('click', () => questionIndexChangeCallback(+1)) ; ///
+		document.getElementById('prev_question').addEventListener('click', () => questionIndexChangeCallback(-1)) ; ///
+		document.getElementById('next_question').addEventListener('click', () => questionIndexChangeCallback(+1)) ; ///
+		document.getElementById('results_to_last_question').addEventListener('click', () => questionIndexChangeCallback(-1)) ; ///
 		
 		// Get the question container and the question child element
 		this.quizQuestionContainerEl = document.getElementById(quizQuestionContainerDomId) ;
@@ -40,22 +40,37 @@ export default class QuizUIManager {
 		this.quizAnswerImgSelector = '.' + quizAnswerImgClassName ;
 		this.quizAnswerTextSelector = '.' + quizAnswerTextClassName ;
 
-		// Get the results container element
+		// Get the results elements
 		this.quizResultsContainerEl = document.getElementById(quizResultsContainerDomId) ;
+		this.quizResultsEl = document.getElementById('results') ; ///
 
 		// Note the callback for when an answer is selected
 		this.questionAnswerSelectCallback = questionAnswerSelectCallback ;
+
+		// Get the result-line template element
+		this.quizResultLineTemplateEl = document.getElementById('template_result_line') ; ///
 	}
 
-	setQuizTitleInfo(quizTitle, quizData) {
+	initForQuiz(quizTitle, quizData) {
 		this.quizTitleEl.innerText = quizTitle ;
 		this.quizIntroTextEl.innerText = quizData.introText ;
+		this.quizData = quizData ;
+		this.numQuestions = this.quizData.questions.length ;
 	}
 
-	updateUI(questionIndex, questionData = null, selectedAnswerIndex = null) {
+	updateUI(questionIndex, questionData = null, selectedAnswerIndex = null, numAnswered = null, results = null) {
+		this.questionIndex = questionIndex ;
+
 		if (questionIndex === -1) this.showTitleElements() ;
-		else if (questionData) this.showQuestion(questionData, selectedAnswerIndex) ;
-		else this.showResults() ;
+		else if (questionData) {
+			this.showQuestion(questionData, selectedAnswerIndex) ;
+			this.setNextQuestionEnabledState(numAnswered) ;
+		}
+		else this.showResults(results.allScores, results.topScores, numAnswered) ;
+	}
+
+	setNextQuestionEnabledState(numAnswered) {
+		document.getElementById('next_question').disabled = (this.questionIndex === this.numQuestions - 1 && numAnswered < this.numQuestions) ; ///
 	}
 
 	showTitleElements() {
@@ -87,23 +102,47 @@ export default class QuizUIManager {
 
 		// Set as selected answer
 		if (selectedAnswerIndex !== null) {
-			this.quizAnswersContainerEl.childNodes[selectedAnswerIndex].classList.add('my-card-selected') ;
+			this.quizAnswersContainerEl.childNodes[selectedAnswerIndex].classList.add('my-card-selected') ; ///
 		}
 	}
 
 	changeSelectedAnswer(answerIndex) {
 		for (const [i, el] of this.quizAnswersContainerEl.childNodes.entries()) {
-			el.classList.toggle('my-card-selected', (i === answerIndex)) ;
+			el.classList.toggle('my-card-selected', (i === answerIndex)) ; ///
 		}
-	}
-
-	showResults() {
-		this.setVisibilities(false, false, true) ;
 	}
 
 	handleAnswerSelection(answerIndex) {
 		this.changeSelectedAnswer(answerIndex) ;
-		this.questionAnswerSelectCallback(answerIndex) // Just call the external callback for now
+		const numAnswered = this.questionAnswerSelectCallback(answerIndex) ;
+		this.setNextQuestionEnabledState(numAnswered) ;
+	}
+
+	showResults(allScores, topScores, numAnswered) {
+		this.setVisibilities(false, false, true) ;
+		this.quizResultsEl.innerHTML = "" ;
+		document.getElementById('result_info').innerHTML = "" ; ///
+		for (const [resultGroupIndex, [resultGroupId, score]] of Object.entries(topScores).entries()) {
+			const groupData = this.quizData.resultGroups[resultGroupId] ;
+
+			// Clone the template to create a new result-line element and set its content
+			const resultLineEl = this.quizResultLineTemplateEl.content.firstElementChild.cloneNode(true) ;
+			resultLineEl.querySelector('.result_text').innerText = groupData.title + ' : ' + Math.round(score * 100 / numAnswered) + '%'; ///
+			this.quizResultsEl.appendChild(resultLineEl) ;
+
+			resultLineEl.addEventListener('click', () => this.selectResultGroup(resultGroupIndex, groupData)) ;
+		}
+
+		const isTie = Object.keys(topScores).length > 1 ;
+		if (!isTie) this.selectResultGroup(0, this.quizData.resultGroups[Object.keys(topScores)[0]]) ;
+		document.getElementById('tie_notification').classList.toggle('d-none', !isTie) ; ///
+	}
+
+	selectResultGroup(resultGroupIndex, groupData) {
+		for (const [i, el] of this.quizResultsEl.childNodes.entries()) {
+			el.classList.toggle('my-card-selected', (i === resultGroupIndex)) ; ///
+		}
+		document.getElementById('result_info').innerHTML = markupToHtml(groupData.description) ; ///
 	}
 
 	setVisibilities(quizTitleVisible, questionVisible, resultsVisible) {
