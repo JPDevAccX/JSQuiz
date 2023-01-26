@@ -26,5 +26,8 @@ export default {
 		results: '#results',
 		resultInfo: '#result_info',
 		resultsLineTemplate: '#template_result_line',
-		resultsLineText: '.result_text'
+		resultsLineText: '.result_text',
+		correctnessResultTemplate: '#template_correctness_result',
+		percentCorrect: '.percent_correct',
+		percentCorrectGroup: '.percent_correct_group'
 } ;
