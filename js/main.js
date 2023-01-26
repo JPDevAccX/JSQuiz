@@ -1,4 +1,5 @@
 // Type: Module (with side-effects)
+import selectors from "./selectors.js" ;
 import QuizDataManager from "./quizDataManager.js";
 import QuizListUIManager from "./quizListUIManager.js";
 import QuizRunManager from "./quizRunManager.js";
@@ -6,31 +7,9 @@ import QuizUIManager from "./quizUIManager.js";
 
 // --- Create manager objects ---
 const quizDataManager = new QuizDataManager('../quizzes') ; // (manages the quiz-list / current-quiz data)
-
-const quizListUIManager = new QuizListUIManager( // (manages the quiz-list user-interface)
-	'quiz_list_container', 
-	'template_carousel_item',
-	'carousel_item_img',
-	'carousel_item_title',
-	'carousel_item_summary'
-) ;
-
+const quizListUIManager = new QuizListUIManager(selectors) // (manages the quiz-list user-interface)
 const quizRunManager = new QuizRunManager() ; // (manages the current quiz state)
-
-const quizUIManager = new QuizUIManager( // (manages the user-interface for the current quiz)
-	'quiz_selector_container',
-	'quiz_title',
-	'quiz_intro_text',
-	'question_container',
-	'question',
-	'answers',
-	'template_answer_choice',
-	'answer_choice_img',
-	'answer_choice_text',
-	'results_container',
-	questionIndexChangeCallback,
-	handleAnswerSelection
-) ;
+const quizUIManager = new QuizUIManager(selectors, questionIndexChangeCallback, handleAnswerSelection) ; // (manages the user-interface for the current quiz)
 
 doSetup() ;
 

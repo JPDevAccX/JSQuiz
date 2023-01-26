@@ -1,39 +1,31 @@
 // Type: Module
 
 export default class QuizListUIManager {
-	constructor(
-		quizListContainerDomId,
-		quizListEntryTemplateDomId,
-		quizListEntryImgClassName,
-		quizListEntryTitleClassName,
-		quizListEntrySummaryClassName
-	) {
-		// Get the list container element
-		this.quizListContainerEl = document.getElementById(quizListContainerDomId) ;
+	constructor(selectors) {
+		// Get elements / templates
+		const keysToRetrieve = ['quizListContainer', 'quizListEntryTemplate'] ;
+		this.els = getElementsBySelector(selectors, keysToRetrieve) ;
 
-		// Get the quiz-list-entry template element and note the class selectors for the elements within
-		this.quizListEntryTemplateEl = document.getElementById(quizListEntryTemplateDomId) ;
-		this.quizListEntryImgSelector = '.' + quizListEntryImgClassName ;
-		this.quizListEntryTitleSelector = '.' + quizListEntryTitleClassName ;
-		this.quizListEntrySummarySelector = '.' + quizListEntrySummaryClassName ;
+		// Note the selectors for accessing elements in newly created template clones
+		this.selectors = selectors ;
 	}
 
 	createQuizSelectionOptions(quizList) {
 		for (const quizEntry of quizList) {
 			// Clone the template to create a new quiz entry element for the quiz list
-			const quizListEntryEl = this.quizListEntryTemplateEl.content.firstElementChild.cloneNode(true);
+			const quizListEntryEl = this.els.quizListEntryTemplate.content.firstElementChild.cloneNode(true);
 
 			// Set all the content for this quiz entry element
-			quizListEntryEl.querySelector(this.quizListEntryImgSelector).src = quizEntry.imageSrc ;
-			quizListEntryEl.querySelector(this.quizListEntryImgSelector).alt = quizEntry.title + ' : ' + quizEntry.summary ;
-			quizListEntryEl.querySelector(this.quizListEntryTitleSelector).innerText = quizEntry.title ;
-			quizListEntryEl.querySelector(this.quizListEntrySummarySelector).innerText = quizEntry.summary ;
+			quizListEntryEl.querySelector(this.selectors.quizListEntryImg).src = quizEntry.imageSrc ;
+			quizListEntryEl.querySelector(this.selectors.quizListEntryImg).alt = quizEntry.title + ' : ' + quizEntry.summary ;
+			quizListEntryEl.querySelector(this.selectors.quizListEntryTitle).innerText = quizEntry.title ;
+			quizListEntryEl.querySelector(this.selectors.quizListEntrySummary).innerText = quizEntry.summary ;
 	
 			// Add it to the list container element
-			this.quizListContainerEl.appendChild(quizListEntryEl) ;
+			this.els.quizListContainer.appendChild(quizListEntryEl) ;
 		}
 
 		// Set the first one as active
-		this.quizListContainerEl.firstElementChild.classList.add('active') ;
+		this.els.quizListContainer.firstElementChild.classList.add('active') ;
 	}
 }
