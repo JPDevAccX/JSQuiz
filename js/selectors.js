@@ -14,6 +14,7 @@ export default {
 		prevQuestionButton: '#prev_question',
 		nextQuestionButton: '#next_question',
 		resultsToLastQButton: '#results_to_last_question',
+		progressStatus: '#progress_status',
 		quizQuestionContainer: '#question_container',
 		quizQuestion: '#question',
 		quizAnswersContainer: '#answers',

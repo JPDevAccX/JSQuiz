@@ -48,6 +48,14 @@
 	padding: 20px ;
 }
 
+/* Styling for progress status message */
+.my-progress-status {
+	font-size: 120% ;
+	font-weight: bold ;
+	margin-bottom: 1em;
+	font-family: 'Roboto', sans-serif ;
+}
+
 /* Styling for question */
 .my-question-container {
 	background-color: #222288 ;
