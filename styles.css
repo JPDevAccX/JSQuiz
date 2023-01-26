@@ -107,6 +107,14 @@
 	min-height: 360px;
 	color: #eee ;
 }
+.my-big-percent {
+	font-size: 400% ;
+	text-align: center;
+}
+.my-percent-correct-group {
+	font-size: 125% ;
+	text-align: center;
+}
 
 /*--------------------------------------------------------
 |                  Misc element styling                  |

@@ -42,35 +42,35 @@
 
 	<!-- BODY CONTENT -->
 	<main class="my-body-container">
-	<h2 id="quiz_title" class="text-center">
-		<!-- QUIZ TITLE HERE -->
-	</h2>
+		<h2 id="quiz_title" class="text-center">
+			<!-- QUIZ TITLE HERE -->
+		</h2>
 
-	<!-- QUIZ-SELECTION CAROUSEL -->
-	<div id="quiz_selector_container">
-		<div id="carousel" class="carousel slide my-carousel">
-			<div id="quiz_list_container" class="carousel-inner">
-				<!-- QUIZ LIST HERE -->
+		<!-- QUIZ-SELECTION CAROUSEL -->
+		<div id="quiz_selector_container">
+			<div id="carousel" class="carousel slide my-carousel">
+				<div id="quiz_list_container" class="carousel-inner">
+					<!-- QUIZ LIST HERE -->
+				</div>
+				<button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Previous</span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Next</span>
+				</button>
 			</div>
-			<button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
-				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Previous</span>
-			</button>
-			<button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
-				<span class="carousel-control-next-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Next</span>
+
+			<div id="quiz_intro_text" class="my-quiz-intro-text">
+				<!-- QUIZ INTRO-TEXT HERE -->
+			</div>
+
+			<!-- START QUIZ BUTTON -->
+			<button id="quiz_start" class="btn btn-primary btn-lg my-button">
+				<span class="iconify-inline" data-width="40px" data-height="40px" data-icon="ic:outline-arrow-drop-down-circle"></span>
 			</button>
 		</div>
-
-		<div id="quiz_intro_text" class="my-quiz-intro-text">
-			<!-- QUIZ INTRO-TEXT HERE -->
-		</div>
-
-		<!-- START QUIZ BUTTON -->
-		<button id="quiz_start" class="btn btn-primary btn-lg my-button">
-			<span class="iconify-inline" data-width="40px" data-height="40px" data-icon="ic:outline-arrow-drop-down-circle"></span>
-		</button>
-	</div>
 
 		<!-- PREVIOUS QUESTION BUTTON -->
 		<div id="question_container" class="text-center">
@@ -128,8 +128,9 @@
 	</footer>
 
 	<!--========== TEMPLATES ===========-->
+	<!-- (note: some of these classes are used solely for targetting) -->
 
-	<!-- Carousel Item (note: the carousel_* classes are used for element targetting rather than styling) -->
+	<!-- Carousel Item -->
 	<template id="template_carousel_item">
 		<div class="carousel-item">
 			<img class="carousel_item_img d-block w-100"> <!-- QUIZ IMAGE -->
@@ -144,7 +145,7 @@
 		</div>
 	</template>
 
-	<!-- Answer Choice (note: the answer_choice* classes are used for element targetting rather than styling) -->
+	<!-- Answer Choice -->
 	<template id="template_answer_choice">
 		<div class="card my-card">
 			<img class="answer_choice_img card-img-top" alt="">  <!-- ANSWER CHOICE IMAGE (note: alt-text is redundant here)--> 
@@ -156,13 +157,25 @@
 		</div>
 	</template>
 
-	<!-- Result Line (note: the result_* classes are used for element targetting rather than styling) -->
+	<!-- Result Line -->
 	<template id="template_result_line">
 		<div class="card my-card-buttonlike">
 			<div class="card-body">
 				<p class="result_text card-text">
 					<!-- RESULT TEXT HERE -->
 				</p>
+			</div>
+		</div>
+	</template>
+
+	<!-- Main result details for 'correctness' type quiz -->
+	<template id="template_correctness_result">
+		<div>
+			<div class="percent_correct my-big-percent">
+				<!-- PERCENTAGE HERE -->
+			</div>
+			<div class="percent_correct_group my-percent-correct-group">
+				<!-- GROUP TEXT HERE -->
 			</div>
 		</div>
 	</template>

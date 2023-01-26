@@ -7,7 +7,7 @@ export default class QuizUIManager {
 			'quizTitle', 'quizSelectorContainer', 'quizIntroText', 
 			'quizStartButton', 'prevQuestionButton', 'nextQuestionButton', 'resultsToLastQButton',
 			'progressStatus', 'quizQuestionContainer', 'quizQuestion', 'quizAnswersContainer', 'quizAnswerTemplate',
-			'quizResultsContainer', 'tieNotification', 'results', 'resultInfo', 'resultsLineTemplate'
+			'quizResultsContainer', 'tieNotification', 'results', 'resultInfo', 'resultsLineTemplate', 'correctnessResultTemplate'
 		] ;
 		this.els = getElementsBySelector(selectors, keysToRetrieve) ;
 
@@ -27,7 +27,7 @@ export default class QuizUIManager {
 		this.els.quizIntroText.innerText = quizData.introText ;
 		this.quizData = quizData ;
 		this.numQuestions =  this.quizData.questions.length ;
-		this.numAnswersRequired = (this.quizData.settings && this.quizData.settings.minAnswers) ? Number(this.quizData.settings.minAnswers) : this.numQuestions ;
+		this.numAnswersRequired = (this.quizData.settings.minAnswers) ? Number(this.quizData.settings.minAnswers) : this.numQuestions ;
 	}
 
 	updateUI(questionIndex, questionData = null, selectedAnswerIndex = null, numAnswered = null, results = null) {
@@ -101,10 +101,21 @@ export default class QuizUIManager {
 		this.setVisibilities(false, false, true) ;
 		this.els.results.innerHTML = "" ;
 		this.els.resultInfo.innerHTML = "" ;
+
+		const resultTypeHandlers = {
+			categories: this.showCategoryResults.bind(this),
+			correctness: this.showCorrectnessResults.bind(this),
+		} ;
+
+		if (resultTypeHandlers[this.quizData.settings.type]) resultTypeHandlers[this.quizData.settings.type](allScores, topScores, numAnswered) ;
+		else console.error("Invalid quiz type") ;
+	}
+
+	showCategoryResults(allScores, topScores, numAnswered) {
 		for (const [resultGroupIndex, [resultGroupId, score]] of Object.entries(topScores).entries()) {
 			const groupData = this.quizData.resultGroups[resultGroupId] ;
 
-			// Clone the template to create a new result-line element and set its content
+			// Clone the result-line template to create a new element, set its content, and add it to the document
 			const resultLineEl = this.els.resultsLineTemplate.content.firstElementChild.cloneNode(true) ;
 			resultLineEl.querySelector(this.selectors.resultsLineText).innerText = groupData.title + ' : ' + Math.round(score * 100 / numAnswered) + '%';
 			this.els.results.appendChild(resultLineEl) ;
@@ -117,9 +128,38 @@ export default class QuizUIManager {
 		this.els.tieNotification.classList.toggle('d-none', !isTie) ;
 	}
 
+	showCorrectnessResults(allScores, topScores, numAnswered) {
+		this.els.tieNotification.classList.toggle('d-none', true) ;
+		
+		const score = allScores.score ;
+		const percentCorrect = Math.round(score * 100 / numAnswered) ;
+		const resultsSummary = "You scored " + score + " points answering " + numAnswered + " / " +	this.numQuestions + " questions" ;
+
+		// Clone the result-line template to create a new element, set its content, and add it to the document
+		const resultLineEl = this.els.resultsLineTemplate.content.firstElementChild.cloneNode(true) ;
+		resultLineEl.querySelector(this.selectors.resultsLineText).innerText = resultsSummary ;
+		this.els.results.appendChild(resultLineEl) ;
+
+		// Clone the correctness-result template to create a new element, set its content, and add it to the document
+		const correctnessResultEl = this.els.correctnessResultTemplate.content.firstElementChild.cloneNode(true) ;
+		correctnessResultEl.querySelector(this.selectors.percentCorrect).innerText = percentCorrect + '%' ;
+		correctnessResultEl.querySelector(this.selectors.percentCorrectGroup).innerText = this.getCorrectnessGroupDesc(percentCorrect) ;
+		this.els.resultInfo.appendChild(correctnessResultEl) ;
+	}
+
+	getCorrectnessGroupDesc(percentCorrect) {
+		let groupDescForPercentCorrect = '' ;
+		for (const [percentThreshold, groupDesc] of Object.entries(this.quizData.resultGroups || {})) {
+			if (percentCorrect >= percentThreshold) groupDescForPercentCorrect = groupDesc ;
+		}
+		return groupDescForPercentCorrect ;
+	}
+
 	selectResultGroup(resultGroupIndex, groupData) {
-		for (const [i, el] of this.els.results.childNodes.entries()) {
-			el.classList.toggle('my-card-selected', (i === resultGroupIndex)) ;
+		if (this.quizData.settings.type === 'categories') {
+			for (const [i, el] of this.els.results.childNodes.entries()) {
+				el.classList.toggle('my-card-selected', (i === resultGroupIndex)) ;
+			}
 		}
 		this.els.resultInfo.innerHTML = markupToHtml(groupData.description) ;
 	}

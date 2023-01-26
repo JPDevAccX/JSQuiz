@@ -2,6 +2,7 @@
 
 export default {
 	settings: {
+		type: 'categories',
 		minAnswers: 6
 	},
 	introText: `There are three basic learning styles. These are visual, auditory, and kinesthetic.
@@ -225,7 +226,7 @@ export default {
 			[/ul]
 			`
 		},
-			b : {
+		b : {
 			title: "Auditory Learner",
 			description: `
 			[b]You learn by hearing and listening. Auditory Learners...[/b]
@@ -238,7 +239,7 @@ export default {
 			[/ul]
 			`
 		},
-			c : {
+		c : {
 			title: "Kinesthetic Learner",
 			description: `
 			[b]You learn by touching and doing. Kinesthetic Learners...[/b]
