@@ -14,7 +14,7 @@
 }
 
 /* Container for body-content (between header and footer) */
-.my-container {
+.my-body-container {
 	 width: 95%;
 	 max-width: 800px;
 	 margin: 2em auto 0 auto ;
@@ -31,7 +31,9 @@
 	font-family: 'Roboto', sans-serif ;
 }
 .my-footer div {
+	display: flex ;
 	gap: 1em ;
+	justify-content: space-between ;
 }
 .my-footer hr {
 	color: #ffffff10 ;
@@ -65,8 +67,7 @@
 .my-question {
 	background-color: #222288 ;
 	color: white ;
-	margin-bottom: 1em;
-	margin-top: 1em;
+	margin: 1em ;
 	font-size: 150% ;
 }
 
@@ -74,8 +75,8 @@
 .my-answers {
 	flex-wrap: wrap ;
 	display: flex ;
-	gap: 16px ;
-	margin-bottom: 32px ;
+	gap: 24px ;
+	margin: 0 16px 32px 16px ;
 	min-height: 260px;
 }
 
@@ -85,20 +86,24 @@
 	color: black ;
 	border: 2px solid black ;
 }
-
 .my-tie-notification {
 	font-size: 140% ;
 	color: white;
+	margin: 0.5em;
 }
-
 .my-results {
 	display: flex ;
+	flex-wrap: wrap ;
 	gap: 1em;
-	margin-bottom: 1em;
-	margin-top: 1em;
+	margin: 1em ;
 }
-
+.my-results-info-container {
+	margin: 1em ;
+	border: 4px inset #111155 ;
+	background-color: #151566 ;
+}
 .my-results-info {
+	padding: 0.5em ;
 	min-height: 360px;
 	color: #eee ;
 }
@@ -119,25 +124,16 @@
 /* Class for custom styling to be used in conjuction with Bootstrap 'card' class */
 .my-card {
 	background-color: #009 ;
-	width:50% ;
-	max-width: 200px ;
-	min-width: 120px;
+	width: 200px ;
 	margin: auto ;
 	opacity: 85% ;
 	color: white; 
 	filter: drop-shadow(0 0 0.3rem black) ;
+	min-height: 260px;
 }
-.my-card2 {
-	background-color: #009 ;
-	width:50% ;
-	min-width: 200px;
-	margin: auto ;
-	opacity: 85% ;
-	color: white; 
-	filter: drop-shadow(0 0 0.3rem black) ;
-}
-.my-card .card-text {
-	font-family: 'Roboto', sans-serif ;
+.my-card img {
+	height: 120px;
+	object-fit: cover;
 }
 .my-card:not(:hover) {
 	transition: opacity 0.1s ;
@@ -151,15 +147,29 @@
 	filter: drop-shadow(0 0 0.4rem white) ;
 	outline: 2px solid #ddd ;
 }
+.my-card-buttonlike {
+	background-color: #009 ;
+	min-width: 200px;
+	margin: auto ;
+	color: white; 
+	filter: drop-shadow(0 0 0.3rem black) ;
+}
+.my-card, .my-card-buttonlike .card-text {
+	font-family: 'Roboto', sans-serif ;
+}
 
 /* Class for custom styling to be used in conjuction with Bootstrap 'carousel' class */
 .my-carousel {
 	border: 8px solid #222288ff ;;
-	height: 50vh ;
+	height: 40vh ;
+	min-height: 300px;
+	max-height: 360px;
 }
 .my-carousel img {
 	object-fit: cover ;
-	height: 50vh ;
+	height: 40vh ;
+	min-height: 300px;
+	max-height: 360px ;
 	filter: brightness(0.75) ;
 	border: 3px solid black;
 }
