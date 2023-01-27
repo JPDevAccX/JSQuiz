@@ -39,7 +39,7 @@
 	color: #ffffff10 ;
 }
 
-#tab_siteinfo {
+.my-bordered-textcontent { /* For site-info content - just so we have no id selectors in here at all! */
 	border: 2px solid blue ;
 	padding: 16px;
 }
