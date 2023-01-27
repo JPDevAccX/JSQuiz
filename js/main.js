@@ -13,7 +13,7 @@ const quizUIManager = new QuizUIManager(selectors, questionIndexChangeCallback, 
 
 // --- Load README for "Site Information" tab ---
 // (as we're using fetch this won't work with local file access - however, this is the case already due to use of ES6 modules anyway)
-fetch('../README.md').
+fetch('README.md').
 	then(response => response.text()).
 	then(responseText => document.getElementById('tab_siteinfo').innerText = responseText).
 	catch(() => document.getElementById('tab_siteinfo').innerText = 'Error loading README file') ;
