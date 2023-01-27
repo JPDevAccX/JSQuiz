@@ -48,7 +48,7 @@ function questionIndexChangeCallback(questionIndexDelta) {
 	const [questionIndex, questionData, answerIndex] = quizRunManager.moveQuestionIndexBy(questionIndexDelta) ;
 	const numAnswered = quizRunManager.getNumAnswered() ;
 	const results = (questionIndex > -1 && !questionData) ? quizRunManager.calcResults() : null ;
-	quizUIManager.updateUI(questionIndex, questionData, answerIndex, numAnswered, results) ;
+	quizUIManager.updateUI(questionIndex, questionData, answerIndex, numAnswered, results, quizDataManager.getQuizMaxScore()) ;
 }
 
 function handleAnswerSelection(answerIndex) {

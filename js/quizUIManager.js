@@ -30,7 +30,7 @@ export default class QuizUIManager {
 		this.numAnswersRequired = (this.quizData.settings.minAnswers) ? Number(this.quizData.settings.minAnswers) : this.numQuestions ;
 	}
 
-	updateUI(questionIndex, questionData = null, selectedAnswerIndex = null, numAnswered = null, results = null) {
+	updateUI(questionIndex, questionData = null, selectedAnswerIndex = null, numAnswered = null, results = null, quizMaxScore = null) {
 		this.questionIndex = questionIndex ;
 
 		if (questionIndex === -1) this.showTitleElements() ;
@@ -39,7 +39,7 @@ export default class QuizUIManager {
 			this.showQuestion(questionData, selectedAnswerIndex) ;
 			this.setNextQuestionEnabledState(numAnswered) ;
 		}
-		else this.showResults(results.allScores, results.topScores, numAnswered) ;
+		else this.showResults(results.allScores, results.topScores, numAnswered, quizMaxScore) ;
 	}
 
 	setNextQuestionEnabledState(numAnswered) {
@@ -97,7 +97,7 @@ export default class QuizUIManager {
 		this.setProgressDescription(numAnswered) ;
 	}
 
-	showResults(allScores, topScores, numAnswered) {
+	showResults(allScores, topScores, numAnswered, quizMaxScore) {
 		this.setVisibilities(false, false, true) ;
 		this.els.results.innerHTML = "" ;
 		this.els.resultInfo.innerHTML = "" ;
@@ -107,17 +107,20 @@ export default class QuizUIManager {
 			correctness: this.showCorrectnessResults.bind(this),
 		} ;
 
-		if (resultTypeHandlers[this.quizData.settings.type]) resultTypeHandlers[this.quizData.settings.type](allScores, topScores, numAnswered) ;
+		if (resultTypeHandlers[this.quizData.settings.type]) resultTypeHandlers[this.quizData.settings.type](allScores, topScores, numAnswered, quizMaxScore) ;
 		else console.error("Invalid quiz type") ;
 	}
 
-	showCategoryResults(allScores, topScores, numAnswered) {
+	showCategoryResults(allScores, topScores) {
+		// Total up all group scores so we can work out the percentage for each group further down
+		let totalOfAllScores = Object.entries(allScores).reduce((acc, current) => acc + current[1], 0) ;
+
 		for (const [resultGroupIndex, [resultGroupId, score]] of Object.entries(topScores).entries()) {
 			const groupData = this.quizData.resultGroups[resultGroupId] ;
 
 			// Clone the result-line template to create a new element, set its content, and add it to the document
 			const resultLineEl = this.els.resultsLineTemplate.content.firstElementChild.cloneNode(true) ;
-			resultLineEl.querySelector(this.selectors.resultsLineText).innerText = groupData.title + ' : ' + Math.round(score * 100 / numAnswered) + '%';
+			resultLineEl.querySelector(this.selectors.resultsLineText).innerText = groupData.title + ' : ' + Math.round(score * 100 / totalOfAllScores) + '%';
 			this.els.results.appendChild(resultLineEl) ;
 
 			resultLineEl.addEventListener('click', () => this.selectResultGroup(resultGroupIndex, groupData)) ;
@@ -128,11 +131,11 @@ export default class QuizUIManager {
 		this.els.tieNotification.classList.toggle('d-none', !isTie) ;
 	}
 
-	showCorrectnessResults(allScores, topScores, numAnswered) {
+	showCorrectnessResults(allScores, topScores, numAnswered, quizMaxScore) {
 		this.els.tieNotification.classList.toggle('d-none', true) ;
 		
 		const score = allScores.score ;
-		const percentCorrect = Math.round(score * 100 / numAnswered) ;
+		const percentCorrect = Math.round(score * 100 / quizMaxScore) ;
 		const resultsSummary = "You scored " + score + " points answering " + numAnswered + " / " +	this.numQuestions + " questions" ;
 
 		// Clone the result-line template to create a new element, set its content, and add it to the document
