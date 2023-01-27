@@ -8,6 +8,7 @@ export default class QuizRunManager {
 		this.numAnswered = 0 ;
 	}
 
+	// Set the answer (by its index) for the current question
 	setAnswer(answerIndex) {
 		if (this.quizRunAnswerSelections[this.currentQuestionIndex] === undefined) this.numAnswered++ ;
 		this.quizRunAnswerSelections[this.currentQuestionIndex] = answerIndex ;
@@ -18,6 +19,7 @@ export default class QuizRunManager {
 		return this.numAnswered ;
 	}
 
+	// Move the current question index by the specified offset and then return the new index, question data, and currently selected answer index
 	moveQuestionIndexBy(i) {
 		this.currentQuestionIndex += i ;
 		return [
@@ -27,6 +29,7 @@ export default class QuizRunManager {
 		]  ;
 	}
 
+	// Calculate scores for each group and return objects for all scores and separately for only top (tied) scores, keyed by group id
 	calcResults() {
 		const allScores = {} ;
 		for (const [questionIndex, answerIndex] of this.quizRunAnswerSelections.entries()) {

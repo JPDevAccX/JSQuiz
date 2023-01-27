@@ -33,21 +33,18 @@ export default class QuizUIManager {
 	updateUI(questionIndex, questionData = null, selectedAnswerIndex = null, numAnswered = null, results = null, quizMaxScore = null) {
 		this.questionIndex = questionIndex ;
 
-		if (questionIndex === -1) this.showTitleElements() ;
-		else if (questionData) {
+		if (questionIndex === -1) this.setVisibilities(true, false, false) ; // TITLE
+		else if (questionData) {	// QUESTION
 			this.setProgressDescription(numAnswered) ;
 			this.showQuestion(questionData, selectedAnswerIndex) ;
 			this.setNextQuestionEnabledState(numAnswered) ;
 		}
-		else this.showResults(results.allScores, results.topScores, numAnswered, quizMaxScore) ;
+		else this.showResults(results.allScores, results.topScores, numAnswered, quizMaxScore) ; // RESULTS
 	}
 
+	// Set the 'disabled' state for the next-question button (so we can disable access to the results page if not enough questions answered)
 	setNextQuestionEnabledState(numAnswered) {
 		this.els.nextQuestionButton.disabled = (this.questionIndex === this.numQuestions - 1 && numAnswered < this.numAnswersRequired) ;
-	}
-
-	showTitleElements() {
-		this.setVisibilities(true, false, false) ;
 	}
 
 	setProgressDescription(numAnswered) {
@@ -84,12 +81,14 @@ export default class QuizUIManager {
 		}
 	}
 
+	// Update display of answers to indicate that a new one is selected
 	changeSelectedAnswer(answerIndex) {
 		for (const [i, el] of this.els.quizAnswersContainer.childNodes.entries()) {
 			el.classList.toggle('my-card-selected', (i === answerIndex)) ;
 		}
 	}
 
+	// Do UI updates and call callback to update underlying state when an answer is selected
 	handleAnswerSelection(answerIndex) {
 		this.changeSelectedAnswer(answerIndex) ;
 		const numAnswered = this.questionAnswerSelectCallback(answerIndex) ;
@@ -97,6 +96,7 @@ export default class QuizUIManager {
 		this.setProgressDescription(numAnswered) ;
 	}
 
+	// Display results (calls specific handler below depending on quiz-type)
 	showResults(allScores, topScores, numAnswered, quizMaxScore) {
 		this.setVisibilities(false, false, true) ;
 		this.els.results.innerHTML = "" ;
@@ -111,6 +111,7 @@ export default class QuizUIManager {
 		else console.error("Invalid quiz type") ;
 	}
 
+	// Show results for 'categories' type quizzes
 	showCategoryResults(allScores, topScores) {
 		// Total up all group scores so we can work out the percentage for each group further down
 		let totalOfAllScores = Object.entries(allScores).reduce((acc, current) => acc + current[1], 0) ;
@@ -118,11 +119,10 @@ export default class QuizUIManager {
 		for (const [resultGroupIndex, [resultGroupId, score]] of Object.entries(topScores).entries()) {
 			const groupData = this.quizData.resultGroups[resultGroupId] ;
 
-			// Clone the result-line template to create a new element, set its content, and add it to the document
+			// Clone the result-line template, set the clone's content, add it to the document, and add a click event-listener for it
 			const resultLineEl = this.els.resultsLineTemplate.content.firstElementChild.cloneNode(true) ;
 			resultLineEl.querySelector(this.selectors.resultsLineText).innerText = groupData.title + ' : ' + Math.round(score * 100 / totalOfAllScores) + '%';
 			this.els.results.appendChild(resultLineEl) ;
-
 			resultLineEl.addEventListener('click', () => this.selectResultGroup(resultGroupIndex, groupData)) ;
 		}
 
@@ -131,6 +131,15 @@ export default class QuizUIManager {
 		this.els.tieNotification.classList.toggle('d-none', !isTie) ;
 	}
 
+	// Select a result group for 'categories' type quizzes
+	selectResultGroup(resultGroupIndex, groupData) {
+		for (const [i, el] of this.els.results.childNodes.entries()) {
+			el.classList.toggle('my-card-selected', (i === resultGroupIndex)) ;
+		}
+		this.els.resultInfo.innerHTML = markupToHtml(groupData.description) ;
+	}
+
+	// Show results for scored 'correctness' type quizzes
 	showCorrectnessResults(allScores, topScores, numAnswered, quizMaxScore) {
 		this.els.tieNotification.classList.toggle('d-none', true) ;
 		
@@ -138,18 +147,19 @@ export default class QuizUIManager {
 		const percentCorrect = Math.round(score * 100 / quizMaxScore) ;
 		const resultsSummary = "You scored " + score + " points answering " + numAnswered + " / " +	this.numQuestions + " questions" ;
 
-		// Clone the result-line template to create a new element, set its content, and add it to the document
+		// Clone the result-line template, set the clone's content, and add it to the document
 		const resultLineEl = this.els.resultsLineTemplate.content.firstElementChild.cloneNode(true) ;
 		resultLineEl.querySelector(this.selectors.resultsLineText).innerText = resultsSummary ;
 		this.els.results.appendChild(resultLineEl) ;
 
-		// Clone the correctness-result template to create a new element, set its content, and add it to the document
+		// Clone the correctness-result template, set the clone's content, and add it to the document
 		const correctnessResultEl = this.els.correctnessResultTemplate.content.firstElementChild.cloneNode(true) ;
 		correctnessResultEl.querySelector(this.selectors.percentCorrect).innerText = percentCorrect + '%' ;
 		correctnessResultEl.querySelector(this.selectors.percentCorrectGroup).innerText = this.getCorrectnessGroupDesc(percentCorrect) ;
 		this.els.resultInfo.appendChild(correctnessResultEl) ;
 	}
 
+	// Get the description string for the classification group for scored 'correctness' quizzes (returns empty string if none exists)
 	getCorrectnessGroupDesc(percentCorrect) {
 		let groupDescForPercentCorrect = '' ;
 		for (const [percentThreshold, groupDesc] of Object.entries(this.quizData.resultGroups || {})) {
@@ -158,15 +168,7 @@ export default class QuizUIManager {
 		return groupDescForPercentCorrect ;
 	}
 
-	selectResultGroup(resultGroupIndex, groupData) {
-		if (this.quizData.settings.type === 'categories') {
-			for (const [i, el] of this.els.results.childNodes.entries()) {
-				el.classList.toggle('my-card-selected', (i === resultGroupIndex)) ;
-			}
-		}
-		this.els.resultInfo.innerHTML = markupToHtml(groupData.description) ;
-	}
-
+	// Set container element visibilities as required for each stage of the quiz
 	setVisibilities(quizTitleVisible, questionVisible, resultsVisible) {
 		this.els.quizSelectorContainer.classList.toggle('d-none', !quizTitleVisible) ;
 		this.els.quizSelectorContainer.ariaHidden = quizTitleVisible ? "false" : "true" ;
