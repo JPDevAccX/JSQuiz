@@ -147,22 +147,22 @@ export default {
 			]
 		},
 		{
-		question: 'What\'s the nearest spiral galaxy to the solar system?',
+		question: 'What\'s the nearest galaxy to the solar system? (max 2 points)',
 			answers: [
 				{
 					text: 'Andromeda',
 					imageSrc: 'https://images.unsplash.com/photo-1614926037592-5d7aec4d5f8c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1182&q=80',
-					weights: { score : 1 }
+					weights: { score : 0 }
 				},
 				{
 					text: 'Canis Major Dwarf',
 					imageSrc: 'https://images.unsplash.com/photo-1665607333445-f35487df13bb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
-					weights: { score : 0 }
+					weights: { score : 1 }
 				},
 				{
 					text: 'It\'s disputed',
 					imageSrc: 'https://images.unsplash.com/photo-1492627223639-6e980361988c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1632&q=80',
-					weights: { score : 0 }
+					weights: { score : 2 }
 				},
 			]
 		}
