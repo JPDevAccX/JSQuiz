@@ -32,16 +32,22 @@ async function doSetup() {
 	const carouselEl = document.querySelector('#carousel')
 	new bootstrap.Carousel(carouselEl, { interval: 2000, touch: false }) ;
 
-	// Add an event listener to handle the carousel selection being changed
+	// Add an event listener to disable the start-quiz button during the carousel slide (to avoid race condition)
+	carouselEl.addEventListener('slide.bs.carousel', () => {
+		document.querySelector(selectors.quizStartButton).disabled = true ;
+	}) ;
+
+	// Add an event listener to handle the carousel selection having changed
 	carouselEl.addEventListener('slid.bs.carousel', async event => {
 		// Load the data for the newly selected quiz and update the UI accordingly
 		const newQuizIndex = event.to ;
 		const quizData = await quizDataManager.loadQuizByIndex(newQuizIndex) ;
 		quizUIManager.initForQuiz(quizList[newQuizIndex].title, quizData) ;
+		document.querySelector(selectors.quizStartButton).disabled = false ; // (re-enable start-quiz button)
 
 		// Start a new run for this quiz
 		quizRunManager.newRun(quizData) ;
-	})
+	}) ;
 }
 
 function questionIndexChangeCallback(questionIndexDelta) {
