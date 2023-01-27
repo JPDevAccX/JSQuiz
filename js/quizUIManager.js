@@ -169,7 +169,10 @@ export default class QuizUIManager {
 
 	setVisibilities(quizTitleVisible, questionVisible, resultsVisible) {
 		this.els.quizSelectorContainer.classList.toggle('d-none', !quizTitleVisible) ;
+		this.els.quizSelectorContainer.ariaHidden = quizTitleVisible ? "false" : "true" ;
 		this.els.quizQuestionContainer.classList.toggle('d-none', !questionVisible) ;
+		this.els.quizQuestionContainer.ariaHidden = questionVisible ? "false" : "true" ;
 		this.els.quizResultsContainer.classList.toggle('d-none', !resultsVisible) ;
+		this.els.quizResultsContainer.ariaHidden = resultsVisible ? "false" : "true" ;
 	}
 }

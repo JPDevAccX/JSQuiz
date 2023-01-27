@@ -10,7 +10,7 @@
 	font-family: 'Roboto', sans-serif ;
 }
 .my-navbar .nav-link {
-	color: white ;
+	color: #ddd ;
 }
 
 /* Container for body-content (between header and footer) */
@@ -37,6 +37,11 @@
 }
 .my-footer hr {
 	color: #ffffff10 ;
+}
+
+#tab_siteinfo {
+	border: 2px solid blue ;
+	padding: 16px;
 }
 
 /*--------------------------------------------------------

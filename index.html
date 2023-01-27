@@ -30,7 +30,7 @@
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav me-auto">
 						<li class="nav-item">
-							<a id="link_tab_quiz" class="nav-link" href="#">Quiz</a>
+							<a id="link_tab_quiz" class="nav-link active" aria-current="page" href="#">Quiz</a>
 						</li>
 						<li class="nav-item">
 							<a id="link_tab_siteinfo" class="nav-link" href="#">Site Information</a>
@@ -42,80 +42,87 @@
 
 	<!-- BODY CONTENT -->
 	<main id="quiz_body" class="my-body-container invisible">
-		<h2 id="quiz_title" class="text-center">
-			<!-- QUIZ TITLE HERE -->
-		</h2>
 
-		<!-- QUIZ-SELECTION CAROUSEL -->
-		<div id="quiz_selector_container">
-			<div id="carousel" class="carousel slide my-carousel">
-				<div id="quiz_list_container" class="carousel-inner">
-					<!-- QUIZ LIST HERE -->
+		<div id="tab_quiz">
+			<h2 id="quiz_title" class="text-center">
+				<!-- QUIZ TITLE HERE -->
+			</h2>
+
+			<!-- QUIZ-SELECTION CAROUSEL -->
+			<div id="quiz_selector_container">
+				<div id="carousel" class="carousel slide my-carousel">
+					<div id="quiz_list_container" class="carousel-inner">
+						<!-- QUIZ LIST HERE -->
+					</div>
+					<button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
 				</div>
-				<button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
-					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-					<span class="visually-hidden">Previous</span>
+
+				<div id="quiz_intro_text" class="my-quiz-intro-text">
+					<!-- QUIZ INTRO-TEXT HERE -->
+				</div>
+
+				<!-- START QUIZ BUTTON -->
+				<button id="quiz_start" class="btn btn-primary btn-lg my-button">
+					<span class="iconify-inline" data-width="40px" data-height="40px" data-icon="ic:outline-arrow-drop-down-circle"></span>
 				</button>
-				<button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
-					<span class="carousel-control-next-icon" aria-hidden="true"></span>
-					<span class="visually-hidden">Next</span>
-				</button>
 			</div>
 
-			<div id="quiz_intro_text" class="my-quiz-intro-text">
-				<!-- QUIZ INTRO-TEXT HERE -->
-			</div>
-
-			<!-- START QUIZ BUTTON -->
-			<button id="quiz_start" class="btn btn-primary btn-lg my-button">
-				<span class="iconify-inline" data-width="40px" data-height="40px" data-icon="ic:outline-arrow-drop-down-circle"></span>
-			</button>
-		</div>
-
-		<!-- PREVIOUS QUESTION BUTTON -->
-		<div id="question_container" class="text-center">
-			<div id="progress_status" class="my-progress-status">
-				<!-- CURRENT PROGRESS HERE -->
-			</div>
-			<button id="prev_question" class="btn btn-primary btn-lg my-button">
-				<span class="iconify-inline" data-width="40px" data-height="40px" data-icon="ic:outline-arrow-drop-down-circle" data-rotate="180deg"></span>
-			</button>
-
-			<div class="my-question-container">
-				<div id="question" class="my-question">
-					<!-- QUESTION HERE -->
-				</div>
-
-				<div id="answers" class="my-answers">
-					<!-- ANSWERS HERE -->
-				</div>
-			</div>
-
-			<!-- NEXT QUESTION BUTTON -->
-			<button id="next_question" class="btn btn-primary btn-lg my-button">
-				<span class="iconify-inline" data-width="40px" data-height="40px" data-icon="ic:outline-arrow-drop-down-circle"></span>
-			</button>
-		</div>
-
-		<!-- RESULTS -->
-		<div id="results_container">
 			<!-- PREVIOUS QUESTION BUTTON -->
-			<button id="results_to_last_question" class="btn btn-primary btn-lg my-button">
-				<span class="iconify-inline" data-width="40px" data-height="40px" data-icon="ic:outline-arrow-drop-down-circle" data-rotate="180deg"></span>
-			</button>
-			<div class="my-results-container">
-			<div id="tie_notification" class="my-tie-notification text-center">
-				It's a tie! Select a category below to show its description.
-			</div>
-				<div id="results" class="my-results text-center">
-					<!-- RESULTS HERE -->
+			<div id="question_container" class="text-center">
+				<div id="progress_status" class="my-progress-status">
+					<!-- CURRENT PROGRESS HERE -->
 				</div>
-				<div class="my-results-info-container">
-					<div id="result_info" class="my-results-info">
-						<!-- SELECTED RESULT INFO HERE -->
+				<button id="prev_question" class="btn btn-primary btn-lg my-button">
+					<span class="iconify-inline" data-width="40px" data-height="40px" data-icon="ic:outline-arrow-drop-down-circle" data-rotate="180deg"></span>
+				</button>
+
+				<div class="my-question-container">
+					<div id="question" class="my-question">
+						<!-- QUESTION HERE -->
+					</div>
+
+					<div id="answers" class="my-answers">
+						<!-- ANSWERS HERE -->
+					</div>
+				</div>
+
+				<!-- NEXT QUESTION BUTTON -->
+				<button id="next_question" class="btn btn-primary btn-lg my-button">
+					<span class="iconify-inline" data-width="40px" data-height="40px" data-icon="ic:outline-arrow-drop-down-circle"></span>
+				</button>
+			</div>
+
+			<!-- RESULTS -->
+			<div id="results_container">
+				<!-- PREVIOUS QUESTION BUTTON -->
+				<button id="results_to_last_question" class="btn btn-primary btn-lg my-button">
+					<span class="iconify-inline" data-width="40px" data-height="40px" data-icon="ic:outline-arrow-drop-down-circle" data-rotate="180deg"></span>
+				</button>
+				<div class="my-results-container">
+				<div id="tie_notification" class="my-tie-notification text-center">
+					It's a tie! Select a category below to show its description.
+				</div>
+					<div id="results" class="my-results text-center">
+						<!-- RESULTS HERE -->
+					</div>
+					<div class="my-results-info-container">
+						<div id="result_info" class="my-results-info">
+							<!-- SELECTED RESULT INFO HERE -->
+						</div>
 					</div>
 				</div>
 			</div>
+		</div>
+
+		<div id="tab_siteinfo" class="d-none" aria-hidden="true">
+			TODO
 		</div>
 	</main>
 
