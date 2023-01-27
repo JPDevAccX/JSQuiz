@@ -48,6 +48,10 @@ async function doSetup() {
 		// Start a new run for this quiz
 		quizRunManager.newRun(quizData) ;
 	}) ;
+
+	// Show the body-content now setup is complete
+	document.querySelector(selectors.quizBody).classList.remove('invisible') ;
+
 }
 
 function questionIndexChangeCallback(questionIndexDelta) {

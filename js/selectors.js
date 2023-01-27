@@ -1,6 +1,8 @@
 // Type: Module
 
 export default {
+		quizBody: '#quiz_body',
+
 		quizListContainer: '#quiz_list_container',
 		quizListEntryTemplate: '#template_carousel_item',
 		quizListEntryImg: '.carousel_item_img',
