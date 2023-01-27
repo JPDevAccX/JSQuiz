@@ -19,6 +19,8 @@ export default class quizListManager {
 		return deepClone(this.quizData) ;
 	}
 
+	// Calculate the maximum achievable score for the current quiz
+	// (used for scored 'correctness' type quizzes to determine final percentage)
 	calcMaxScoreForGroup(groupId) {
 		let maxScoreForQuiz = 0 ;
 		for (const question of this.quizData.questions) {
