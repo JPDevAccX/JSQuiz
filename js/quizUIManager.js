@@ -5,17 +5,15 @@ export default class QuizUIManager {
 		// Get elements / templates
 		const keysToRetrieve = [
 			'quizTitle', 'quizSelectorContainer', 'quizIntroText', 
-			'quizStartButton', 'prevQuestionButton', 'nextQuestionButton', 'resultsToLastQButton',
+			'prevQuestionButton', 'nextQuestionButton',
 			'progressStatus', 'quizQuestionContainer', 'quizQuestion', 'quizAnswersContainer', 'quizAnswerTemplate',
 			'quizResultsContainer', 'tieNotification', 'results', 'resultInfo', 'resultsLineTemplate', 'correctnessResultTemplate'
 		] ;
 		this.els = getElementsBySelector(selectors, keysToRetrieve) ;
 
 		// Add event listeners for all the buttons that go backwards / forwards through the title -> questions -> results
-		this.els.quizStartButton.addEventListener('click', () => questionIndexChangeCallback(+1)) ;
 		this.els.prevQuestionButton.addEventListener('click', () => questionIndexChangeCallback(-1)) ;
 		this.els.nextQuestionButton.addEventListener('click', () => questionIndexChangeCallback(+1)) ;
-		this.els.resultsToLastQButton.addEventListener('click', () => questionIndexChangeCallback(-1)) ;
 		
 		// Note the callback for when an answer is selected and also the selectors for accessing elements in newly created template clones
 		this.questionAnswerSelectCallback = questionAnswerSelectCallback ;
@@ -171,10 +169,10 @@ export default class QuizUIManager {
 	// Set container element visibilities as required for each stage of the quiz
 	setVisibilities(quizTitleVisible, questionVisible, resultsVisible) {
 		this.els.quizSelectorContainer.classList.toggle('d-none', !quizTitleVisible) ;
-		this.els.quizSelectorContainer.ariaHidden = quizTitleVisible ? "false" : "true" ;
+		this.els.progressStatus.classList.toggle('d-none', quizTitleVisible) ;
+		this.els.prevQuestionButton.classList.toggle('d-none', quizTitleVisible) ;
 		this.els.quizQuestionContainer.classList.toggle('d-none', !questionVisible) ;
-		this.els.quizQuestionContainer.ariaHidden = questionVisible ? "false" : "true" ;
 		this.els.quizResultsContainer.classList.toggle('d-none', !resultsVisible) ;
-		this.els.quizResultsContainer.ariaHidden = resultsVisible ? "false" : "true" ;
+		this.els.nextQuestionButton.classList.toggle('d-none', resultsVisible) ;
 	}
 }
