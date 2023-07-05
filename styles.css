@@ -170,6 +170,14 @@
 }
 
 /*--------------------------------------------------------
+|                  Bootstrap overrides                   |
+--------------------------------------------------------*/
+
+.card-body {
+	width: 100% ; /* Required for proper centering of the answer-text on Chromium-based browsers */
+}
+
+/*--------------------------------------------------------
 |   Additional classes for Bootstrap component styling   |
 --------------------------------------------------------*/
 
