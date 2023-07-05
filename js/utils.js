@@ -41,3 +41,19 @@ function htmlspecialchars(str) {
 function getElementsBySelector(keysToSelectorsTable, keysToRetrieve) {
 	return Object.fromEntries(keysToRetrieve.map(key => ([key, document.querySelector(keysToSelectorsTable[key])]))) ;
 }
+
+// Get index of given node in parent
+function getNodeIndex(node) {
+	return Array.prototype.indexOf.call(node.parentNode.children, node);
+}
+
+// Get index in parent of current or ancestor node with given class
+function getIndexOfFirstElementWithClassTraversingUp(node, className, includeNodeItself = true) {
+	if (!includeNodeItself && node !== window.document) node = node.parentNode ;
+
+	while (node !== window.document && !node.classList.contains(className)) {
+		node = node.parentNode ;
+	}
+	
+	return (node !== window.document) ? getNodeIndex(node) : null ;
+}

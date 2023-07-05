@@ -19,9 +19,10 @@ export default class QuizRunManager {
 		return this.numAnswered ;
 	}
 
-	// Move the current question index by the specified offset and then return the new index, question data, and currently selected answer index
-	moveQuestionIndexBy(i) {
-		this.currentQuestionIndex += i ;
+	// Modify the current question index and then return the new index, question data, and currently selected answer index
+	moveQuestionIndex(i, changeType = 'rel') {
+		if (changeType === 'rel') this.currentQuestionIndex += i ;
+		else this.currentQuestionIndex = i ;
 		return [
 			this.currentQuestionIndex, 
 			this.quizData.questions[this.currentQuestionIndex], // (-1 index is okay here! - and we just leave it as undefined for out of bounds)

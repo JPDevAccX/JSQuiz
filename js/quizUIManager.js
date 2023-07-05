@@ -1,22 +1,28 @@
 // Type: Module
 
 export default class QuizUIManager {
-	constructor(selectors, questionIndexChangeCallback, questionAnswerSelectCallback) {
+	constructor(selectors, questionIndexChangeCallback, questionAnswerSelectCallback, resetCallback) {
 		// Get elements / templates
 		const keysToRetrieve = [
 			'quizTitle', 'quizSelectorContainer', 'quizIntroText', 
 			'prevQuestionButton', 'nextQuestionButton',
-			'progressStatus', 'quizQuestionContainer', 'quizQuestion', 'quizAnswersContainer', 'quizAnswerTemplate',
-			'quizResultsContainer', 'tieNotification', 'results', 'resultInfo', 'resultsLineTemplate', 'correctnessResultTemplate'
+			'progressStatus', 'progressPanel', 'progressPanelContents', 'answerStatusTemplate', 
+			'quizQuestionContainer', 'quizQuestion', 'quizAnswersContainer', 'quizAnswerTemplate',
+			'quizResultsContainer', 'tieNotification', 'results', 'resultInfo', 'resultsLineTemplate', 'correctnessResultTemplate',
+			'resetButton'
 		] ;
 		this.els = getElementsBySelector(selectors, keysToRetrieve) ;
 
 		// Add event listeners for all the buttons that go backwards / forwards through the title -> questions -> results
 		this.els.prevQuestionButton.addEventListener('click', () => questionIndexChangeCallback(-1)) ;
 		this.els.nextQuestionButton.addEventListener('click', () => questionIndexChangeCallback(+1)) ;
+
+		// Add event listener for the reset button
+		this.els.resetButton.addEventListener('click', resetCallback) ;
 		
-		// Note the callback for when an answer is selected and also the selectors for accessing elements in newly created template clones
+		// Note any callbacks we need to use later and also the selectors for accessing elements in newly created template clones
 		this.questionAnswerSelectCallback = questionAnswerSelectCallback ;
+		this.questionIndexChangeCallback = questionIndexChangeCallback ;
 		this.selectors = selectors ;
 	}
 
@@ -26,6 +32,8 @@ export default class QuizUIManager {
 		this.quizData = quizData ;
 		this.numQuestions =  this.quizData.questions.length ;
 		this.numAnswersRequired = (this.quizData.settings.minAnswers) ? Number(this.quizData.settings.minAnswers) : this.numQuestions ;
+
+		this.setupProgressPanel(this.numQuestions) ;
 	}
 
 	updateUI(questionIndex, questionData = null, selectedAnswerIndex = null, numAnswered = null, results = null, quizMaxScore = null) {
@@ -34,8 +42,9 @@ export default class QuizUIManager {
 		if (questionIndex === -1) this.setVisibilities(true, false, false) ; // TITLE
 		else if (questionData) {	// QUESTION
 			this.setProgressDescription(numAnswered) ;
-			this.showQuestion(questionData, selectedAnswerIndex) ;
+			this.showQuestion(questionIndex, questionData, selectedAnswerIndex) ;
 			this.setNextQuestionEnabledState(numAnswered) ;
+			this.updateProgressPanelSetCurrent(questionIndex) ;
 		}
 		else this.showResults(results.allScores, results.topScores, numAnswered, quizMaxScore) ; // RESULTS
 	}
@@ -50,7 +59,38 @@ export default class QuizUIManager {
 			"(" + numAnswered + " answered out of a minimum of " + this.numAnswersRequired + ")" ;
 	}
 
-	showQuestion(questionData, selectedAnswerIndex) {
+	setupProgressPanel(numQuestions) {
+		this.els.progressPanelContents.innerHTML = '' ;
+		for (let i = 0; i < numQuestions; i++) {
+			const answerStatusUnansweredEl = this.els.answerStatusTemplate.content.firstElementChild.cloneNode(true) ;
+			this.els.progressPanelContents.appendChild(answerStatusUnansweredEl) ;
+		}
+
+		// Add event handlers (because we're using a <div> pseudo-button we also need to explicitly handle keydown)
+		this.els.progressPanelContents.addEventListener('click', (e) => this.handleQuestionSelectClick(e))
+		this.els.progressPanelContents.addEventListener('keydown', (e) => {
+			if (e.key === " " || e.key === "Enter" || e.key === "Spacebar") {
+				e.preventDefault() ;
+				this.handleQuestionSelectClick(e) ;
+    	}
+		}) ;
+	}
+
+	updateProgressPanelSetAnswered(questionIndex) {
+		this.els.progressPanelContents.childNodes[questionIndex].children[0].classList.remove('opacity-25') ;
+	}
+
+	updateProgressPanelSetCurrent(questionIndex) {
+		this.els.progressPanelContents.childNodes.forEach(el => el.classList.remove('my-answer-selected')) ;
+		this.els.progressPanelContents.childNodes[questionIndex].classList.add('my-answer-selected') ;
+	}
+
+	handleQuestionSelectClick(e) {
+		const questionIndex = getIndexOfFirstElementWithClassTraversingUp(e.target, "answer_status") ;
+		if (questionIndex !== null) this.questionIndexChangeCallback(questionIndex, "abs") ;
+	}
+
+	showQuestion(questionIndex, questionData, selectedAnswerIndex) {
 		this.setVisibilities(false, true, false) ;
 
 		// Question
@@ -70,7 +110,7 @@ export default class QuizUIManager {
 			this.els.quizAnswersContainer.appendChild(quizAnswerEl) ;
 
 			// Add click event-listener for it
-			quizAnswerEl.addEventListener('click', () => this.handleAnswerSelection(i)) ;
+			quizAnswerEl.addEventListener('click', () => this.handleAnswerSelection(questionIndex, i)) ;
 		}
 
 		// Set as selected answer
@@ -87,11 +127,12 @@ export default class QuizUIManager {
 	}
 
 	// Do UI updates and call callback to update underlying state when an answer is selected
-	handleAnswerSelection(answerIndex) {
+	handleAnswerSelection(questionIndex, answerIndex) {
 		this.changeSelectedAnswer(answerIndex) ;
 		const numAnswered = this.questionAnswerSelectCallback(answerIndex) ;
 		this.setNextQuestionEnabledState(numAnswered) ;
 		this.setProgressDescription(numAnswered) ;
+		this.updateProgressPanelSetAnswered(questionIndex) ;
 	}
 
 	// Display results (calls specific handler below depending on quiz-type)
@@ -170,6 +211,7 @@ export default class QuizUIManager {
 	setVisibilities(quizTitleVisible, questionVisible, resultsVisible) {
 		this.els.quizSelectorContainer.classList.toggle('d-none', !quizTitleVisible) ;
 		this.els.progressStatus.classList.toggle('d-none', quizTitleVisible) ;
+		this.els.progressPanel.classList.toggle('d-none', quizTitleVisible) ;
 		this.els.prevQuestionButton.classList.toggle('d-none', quizTitleVisible) ;
 		this.els.quizQuestionContainer.classList.toggle('d-none', !questionVisible) ;
 		this.els.quizResultsContainer.classList.toggle('d-none', !resultsVisible) ;

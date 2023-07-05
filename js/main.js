@@ -9,7 +9,7 @@ import QuizUIManager from "./quizUIManager.js";
 const quizDataManager = new QuizDataManager('../quizzes') ; // (manages the quiz-list / current-quiz data)
 const quizListUIManager = new QuizListUIManager(selectors) // (manages the quiz-list user-interface)
 const quizRunManager = new QuizRunManager() ; // (manages the current quiz state)
-const quizUIManager = new QuizUIManager(selectors, questionIndexChangeCallback, handleAnswerSelection) ; // (manages the user-interface for the current quiz)
+const quizUIManager = new QuizUIManager(selectors, questionIndexChangeCallback, handleAnswerSelection, reset) ; // (manages the user-interface for the current quiz)
 
 // --- Load README for "Site Information" tab ---
 // (as we're using fetch this won't work with local file access - however, this is the case already due to use of ES6 modules anyway)
@@ -77,14 +77,12 @@ async function doQuizSetup() {
 		// Start a new run for this quiz
 		quizRunManager.newRun(quizData) ;
 	}) ;
-
 	// Show the body-content now setup is complete
 	document.querySelector(selectors.quizBody).classList.remove('invisible') ;
-
 }
 
-function questionIndexChangeCallback(questionIndexDelta) {
-	const [questionIndex, questionData, answerIndex] = quizRunManager.moveQuestionIndexBy(questionIndexDelta) ;
+function questionIndexChangeCallback(questionIndexChangeValue, changeType) {
+	const [questionIndex, questionData, answerIndex] = quizRunManager.moveQuestionIndex(questionIndexChangeValue, changeType) ;
 	const numAnswered = quizRunManager.getNumAnswered() ;
 	const results = (questionIndex > -1 && !questionData) ? quizRunManager.calcResults() : null ;
 	quizUIManager.updateUI(questionIndex, questionData, answerIndex, numAnswered, results, quizDataManager.getQuizMaxScore()) ;
@@ -92,4 +90,16 @@ function questionIndexChangeCallback(questionIndexDelta) {
 
 function handleAnswerSelection(answerIndex) {
 	return quizRunManager.setAnswer.bind(quizRunManager)(answerIndex) ;
+}
+
+async function reset() {
+	const quizList = quizDataManager.getQuizList() ;
+	const quizData = quizDataManager.getCurrentQuizData() ;
+	const quizIndex = quizDataManager.getCurrentQuizIndex() ;
+
+	quizUIManager.updateUI(-1) // question #-1 = title
+	quizUIManager.initForQuiz(quizList[quizIndex].title, quizData) ;
+
+	// Start a new run for this quiz
+	quizRunManager.newRun(quizData) ;
 }

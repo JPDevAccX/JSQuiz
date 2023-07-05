@@ -1,4 +1,12 @@
 /*--------------------------------------------------------
+|                     Global rules                       |
+--------------------------------------------------------*/
+
+* {
+	user-select: none;
+}
+
+/*--------------------------------------------------------
 |                  Main page sections                    |
 --------------------------------------------------------*/
 
@@ -53,14 +61,43 @@
 	background-color: #222288 ;
 	color: white ;
 	padding: 20px ;
+	min-height: 128px ;
 }
 
 /* Styling for progress status message */
 .my-progress-status {
 	font-size: 120% ;
 	font-weight: bold ;
-	margin-bottom: 1em;
+	margin-bottom: 0.5em;
 	font-family: 'Roboto', sans-serif ;
+}
+
+.my-progress-panel-heading {
+	height: 2em;
+	background-color: #ddd;
+	font-weight: bold ;
+	font-size: 110% ;
+	color: black;
+	display: flex ;
+	justify-content: center;
+	align-items: center;
+	letter-spacing: 0.1em;
+	border: 1px solid gray;
+}
+
+.my-progress-panel-contents {
+	display: flex ;
+	flex-wrap: wrap ;
+	gap: 4px ;
+	justify-content: center ;
+	background-color: #eee ;
+	border: 1px solid gray;
+	border-top: none ;
+	padding: 4px ;
+}
+
+.my-answer-selected {
+	outline: 2px solid black ;
 }
 
 /* Styling for question */
@@ -68,12 +105,14 @@
 	background-color: #222288 ;
 	color: black ;
 	border: 2px solid black ;
+	min-height: 420px;
 }
 .my-question {
 	background-color: #222288 ;
 	color: white ;
 	margin: 1em ;
 	font-size: 150% ;
+	min-height: 3em ;	
 }
 
 /* Styling for answer-choices layout */
@@ -190,4 +229,5 @@
 	padding-bottom: 0 ;
 	font-size: 200%;
 	filter: drop-shadow(0 0 0.3rem black) ;
+	text-shadow: 2px 2px 1px black ;
 }
