@@ -73,6 +73,16 @@
 				<!-- CURRENT PROGRESS HERE -->
 			</div>
 
+			<!-- PROGRESS STATUS PANEL -->
+			<div id="progress_panel" class="mb-3">
+				<div class="my-progress-panel-heading">
+					Questions
+				</div>
+				<div id="progress_panel_contents" class="my-progress-panel-contents">
+					<!-- ANSWERS STATUS HERE -->
+				</div>
+			</div>
+
 			<!-- PREVIOUS QUESTION BUTTON -->
 			<button id="prev_question" class="btn btn-primary btn-lg my-button">
 				<span class="iconify-inline" data-width="40px" data-height="40px" data-icon="ic:outline-arrow-drop-down-circle" data-rotate="180deg"></span>
@@ -109,6 +119,10 @@
 						</div>
 					</div>
 				</div>
+
+				<div class="text-center mt-2">
+					<button id="reset_button" class="btn btn-lg btn-primary">Reset</button>
+				</div>
 			</div>
 		</div>
 
@@ -121,7 +135,7 @@
 	<footer class="my-footer">
 		<div>
 			<span>Site Design Copyright &#169; James Percival 2023</span>
-			<span class="text-end">Last Updated 2023-01-27</span>
+			<span class="text-end">Last Updated 2023-07-05</span>
 		</div>
 	</footer>
 
@@ -136,7 +150,7 @@
 				<h5 class="carousel_item_title">
 					<!-- QUIZ TITLE HERE -->
 				</h5>
-				<p class="carousel_item_summary d-none d-sm-block">
+				<p class="carousel_item_summary">
 					<!-- QUIZ SUMMARY HERE -->
 				</p>
 			</div>
@@ -145,14 +159,14 @@
 
 	<!-- Answer Choice -->
 	<template id="template_answer_choice">
-		<div class="card my-card">
+		<button class="card my-card p-0">
 			<img class="answer_choice_img card-img-top" alt="">  <!-- ANSWER CHOICE IMAGE (note: alt-text is redundant here)--> 
 			<div class="card-body">
 				<p class="answer_choice_text card-text">
 					<!-- ANSWER CHOICE TEXT HERE -->
 				</p>
 			</div>
-		</div>
+		</button>
 	</template>
 
 	<!-- Result Line -->
@@ -174,6 +188,15 @@
 			</div>
 			<div class="percent_correct_group my-percent-correct-group">
 				<!-- GROUP TEXT HERE -->
+			</div>
+		</div>
+	</template>
+
+	<!-- Answer status indicator / jump-to-question button -->
+	<template id="template_answer_status">
+		<div class="answer_status" role="button" tabindex="0">
+			<div class="opacity-25">
+				<span class="iconify" data-icon="mingcute:question-line" data-width="40" data-height="40"></span>	
 			</div>
 		</div>
 	</template>

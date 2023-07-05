@@ -5,6 +5,7 @@ export default class quizListManager {
 		this.quizzesPath = quizzesPath ;
 		this.quizList = [] ;
 		this.quizMaxScore = null ;
+		this.quizIndex = null ;
 	}
 
 	async loadList() {
@@ -13,6 +14,7 @@ export default class quizListManager {
 	}
 
 	async loadQuizByIndex(i) {
+		this.quizIndex = i ;
 		const quizName = this.quizList[i].name ;
 		this.quizData = (await import(this.quizzesPath + '/' + quizName + '.js')).default ;
 		if (this.quizData.settings.type === 'correctness') this.quizMaxScore = this.calcMaxScoreForGroup('score') ;
@@ -35,5 +37,17 @@ export default class quizListManager {
 
 	getQuizMaxScore() {
 		return this.quizMaxScore ;
+	}
+
+	getCurrentQuizIndex() {
+		return this.quizIndex ;
+	}
+
+	getQuizList() {
+		return deepClone(this.quizList) ;
+	}
+
+	getCurrentQuizData() {
+		return deepClone(this.quizData) ;
 	}
 }

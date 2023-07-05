@@ -29,5 +29,9 @@ export default {
 		resultsLineText: '.result_text',
 		correctnessResultTemplate: '#template_correctness_result',
 		percentCorrect: '.percent_correct',
-		percentCorrectGroup: '.percent_correct_group'
+		percentCorrectGroup: '.percent_correct_group',
+		progressPanel: '#progress_panel',
+		progressPanelContents: '#progress_panel_contents',
+		answerStatusTemplate: '#template_answer_status',
+		resetButton: '#reset_button'
 } ;
